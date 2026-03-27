@@ -199,6 +199,12 @@ const defaultThisIsMeAnswers: ThisIsMeAnswers = {
   },
 }
 
+function clearStoredState() {
+  if (typeof window === 'undefined') return
+  window.localStorage.removeItem(STORAGE_KEY)
+  window.localStorage.removeItem(THIS_IS_ME_KEY)
+}
+
 const defaultFolders: Folder[] = [
   {
     id: 'this-is-me',
@@ -362,6 +368,13 @@ function ProtectedRoute({
 }
 
 function LayoutShell({ children }: { children: React.ReactNode }) {
+  const handleRestart = () => {
+    clearStoredState()
+    if (typeof window !== 'undefined') {
+      window.location.href = '/'
+    }
+  }
+
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-6 md:px-6 lg:px-8">
       <header className="mb-6 flex items-center justify-between">
@@ -397,6 +410,13 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
           >
             Start free
           </Link>
+          <button
+            type="button"
+            onClick={handleRestart}
+            className="rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 shadow-soft hover:border-ordli-teal hover:text-ordli-teal"
+          >
+            Restart prototype
+          </button>
         </nav>
       </header>
       {children}
